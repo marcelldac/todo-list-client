@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
 import './App.css'
+import { useEffect, useState } from 'react'
+
 import { api } from './api/api';
 
 
@@ -9,6 +10,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState();
 
+  //#region Crud functions
   async function getTodos() {
     const { data } = await api.get('/todos');
     setTodos(data);
@@ -18,17 +20,14 @@ function App() {
     if (!input) {
       alert('Input não encontrado')
     };
-
     await api.post('/todos', {
       name: input,
     });
-
     getTodos();
   }
 
   async function removeTodo(todo) {
     await api.delete(`/todos/${todo.id}`);
-
     getTodos();
   }
 
@@ -37,13 +36,12 @@ function App() {
       id: todo.id,
       name: input,
     });
-
     getTodos();
   }
+  //#endregion
 
   function handleSubmit(e) {
     e.preventDefault();
-
     addTodo();
   }
 
@@ -68,11 +66,17 @@ function App() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input onChange={(event) => {
-          setInput(event.target.value)
-          console.log(input);
-        }} value={input} />
-        <button type='submit'>add task</button>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <input
+            onChange={(event) => {
+              setInput(event.target.value)
+              console.log(input);
+            }}
+            value={input}
+            style={{ height: '30px', marginBottom: '10px' }}
+          />
+          <button type='submit'>Add Task</button>
+        </div>
       </form>
       <MapTodos todos={todos} />
     </div>
