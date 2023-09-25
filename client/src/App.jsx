@@ -18,7 +18,7 @@ function App() {
 
   async function addTodo() {
     if (!input) {
-      alert('Input não encontrado')
+      alert('Não encontrado')
     };
     await api.post('/todos', {
       name: input,
@@ -27,6 +27,10 @@ function App() {
   }
 
   async function removeTodo(todo) {
+    const res = confirm('Deseja realmente excluir?')
+    if (!res) {
+      return
+    }
     await api.delete(`/todos/${todo.id}`);
     getTodos();
   }
@@ -43,21 +47,28 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
     addTodo();
+    setInput('');
   }
 
   const MapTodos = ({ todos }) => {
-    return <div>{
-      todos.map((todo) => {
-        return (
-          <div>
-            <p>{todo.name}</p>
-            <button onClick={() => removeTodo(todo)}>Rem</button>
-            <button onClick={() => updateTodo(todo)}>edit</button>
-          </div>
-        )
-      })
-    }</div>
-  }
+    return (
+      <>
+        {
+          todos.map((todo) => {
+            return (
+              <div className='container-todo'>
+                <div className='content-todo'>
+                  <p className='text-todo'>{todo.name}</p>
+                </div>
+                <button className='remove-btn-todo' onClick={() => removeTodo(todo)}>Remover</button>
+                <button onClick={() => updateTodo(todo)}>Editar</button>
+              </div>
+            )
+          })
+        }
+      </>
+    );
+  };
 
   useEffect(() => {
     getTodos();
@@ -66,20 +77,20 @@ function App() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className='form-header-container'>
           <input
             onChange={(event) => {
               setInput(event.target.value)
               console.log(input);
             }}
             value={input}
-            style={{ height: '30px', marginBottom: '10px' }}
+            className='form-input'
           />
           <button type='submit'>Add Task</button>
         </div>
       </form>
       <MapTodos todos={todos} />
-    </div>
+    </div >
   )
 }
 
