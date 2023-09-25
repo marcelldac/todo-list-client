@@ -15,14 +15,20 @@ function App() {
   }
 
   async function addTodo() {
+    if (!input) {
+      alert('Input não encontrado')
+    };
+
     await api.post('/todos', {
       name: input,
-    })
+    });
+
     getTodos();
   }
 
   async function removeTodo(todo) {
     await api.delete(`/todos/${todo.id}`);
+
     getTodos();
   }
 
@@ -31,11 +37,13 @@ function App() {
       id: todo.id,
       name: input,
     });
+
     getTodos();
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+
     addTodo();
   }
 
@@ -62,6 +70,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         <input onChange={(event) => {
           setInput(event.target.value)
+          console.log(input);
         }} value={input} />
         <button type='submit'>add task</button>
       </form>
