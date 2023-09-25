@@ -57,7 +57,6 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const { id } = req.params;
-
   const newId = parseInt(id);
 
   if (!newId) {
