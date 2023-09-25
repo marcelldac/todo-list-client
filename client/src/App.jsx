@@ -36,9 +36,11 @@ function App() {
   }
 
   async function updateTodo(todo) {
+    /* TODO: Improve this */
+    const res = prompt('Para qual nome deseja alterar?');
     await api.put(`/todos`, {
       id: todo.id,
-      name: input,
+      name: res,
     });
     getTodos();
   }
