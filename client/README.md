@@ -1,8 +1,20 @@
-# React + Vite
+# How to install and configure the project?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Client
 
-Currently, two official plugins are available:
+```bash
+npm install // yarn
+```
+``` bash
+npm run dev // yarn dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Server
+
+ - Add a '.env' file to your environment (root directory).
+
+ - Configure your database using the command bellow. (using PostgreSQL):
+
+```prisma
+DATABASE_URL="postgresql://<username (default: postgres)>:<password>@<host (default:localhost)>:<port (default:5432)>/todos?schema=<schema (default:public)>"
+```
