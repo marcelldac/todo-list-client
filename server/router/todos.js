@@ -6,6 +6,6 @@ const todoController = require('../controller/todoController');
 router.post('/', todoController.create);
 router.get('/', todoController.read);
 router.put('/', todoController.update);
-router.delete('/', todoController.delete);
+router.delete('/:id', todoController.delete);
 
 module.exports = router;
