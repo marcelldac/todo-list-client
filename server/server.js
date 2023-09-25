@@ -5,7 +5,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -34,7 +34,7 @@ app.post('/todos', async (req, res) => {
 //#region Read Todo
 
 app.get('/todos', async (req, res) => {
-  const todos = await prisma.todo.findMany()
+  const todos = await prisma.todo.findMany();
   res.status(200).json(todos);
 })
 
@@ -46,7 +46,7 @@ app.put('/todos', async (req, res) => {
   const { name, id, status } = req.body;
 
   if (!id) {
-    return res.status(400).json("Id is mandatory")
+    return res.status(400).json("Id is mandatory");
   }
 
   const todoAlreadyExists = await prisma.todo.findUnique({ where: { id } });
