@@ -9,6 +9,7 @@ function App() {
 
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState();
+  const [isCompleted, setIsCompleted] = useState(false);
 
   //#region Crud functions
   async function getTodos() {
@@ -38,12 +39,27 @@ function App() {
   async function updateTodo(todo) {
     /* TODO: Improve this */
     const res = prompt('Para qual nome deseja alterar?');
-    await api.put(`/todos`, {
+    await api.put('/todos', {
       id: todo.id,
       name: res,
     });
     getTodos();
   }
+
+  /* TODO: Olhar se isso está funcionando direito quando a internet voltar */
+  async function updateTodoStatus(todo) {
+    setIsCompleted(!isCompleted);
+    try {
+      await api.put('/todos', {
+        id: todo.id,
+        status: isCompleted
+      });
+    } catch (e) {
+      console.log(e)
+    }
+
+
+  };
   //#endregion
 
   function handleSubmit(e) {
@@ -58,7 +74,7 @@ function App() {
         {
           todos.map((todo) => {
             return (
-              <div className='container-todo'>
+              <div className='container-todo' onClick={() => updateTodoStatus(todo)} style={{ backgroundColor: todo.status ? 'green' : 'red' }}>
                 <div className='content-todo'>
                   <p className='text-todo'>{todo.name}</p>
                 </div>
