@@ -3,10 +3,10 @@
 ## Client
 
 ```bash
-npm install // yarn
+npm install
 ```
 ``` bash
-npm run dev // yarn dev
+npm run dev
 ```
 
 ## Server
