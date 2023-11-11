@@ -83,18 +83,34 @@ function App() {
       <>
         {todos.map((todo) => {
           return (
-            <div key={todo.id} className="container-todo">
+            <div
+              key={todo.id}
+              className="container-todo"
+              style={{ backgroundColor: todo.status ? "#718096" : "#a0aec0" }}
+            >
               <div
                 className="dot-status-todo"
                 style={{ backgroundColor: todo.status ? "green" : "red" }}
                 onClick={() => updateTodoStatus(todo)}
               ></div>
               <div className="content-todo">
-                <p className="text-todo">{todo.name}</p>
+                <p
+                  className="text-todo"
+                  style={{
+                    color: todo.status ? "#4A5568" : "#171923",
+                  }}
+                >
+                  {todo.name}
+                </p>
               </div>
               <button
                 className="remove-btn-todo"
                 onClick={() => removeTodo(todo)}
+                style={{
+                  color: todo.status ? "#4A5568" : "#fff",
+                  cursor: todo.status ? "inherit" : "pointer",
+                }}
+                disabled={todo.status}
               >
                 Remover
               </button>
@@ -103,6 +119,11 @@ function App() {
                   const newName = prompt("Para qual nome deseja alterar?");
                   updateTodo(todo, newName);
                 }}
+                style={{
+                  color: todo.status ? "#4A5568" : "#fff",
+                  cursor: todo.status ? "inherit" : "pointer",
+                }}
+                disabled={todo.status}
               >
                 Editar
               </button>
