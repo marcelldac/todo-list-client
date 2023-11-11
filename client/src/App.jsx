@@ -9,38 +9,49 @@ function App() {
   const [isCompleted, setIsCompleted] = useState(false);
 
   //#region Crud functions
-  async function getTodos() {
+  async function fetchData() {
     const { data } = await api.get("/todos");
     setTodos(data);
   }
 
   async function addTodo() {
-    if (!input) {
-      alert("Não encontrado");
+    if (!input) alert("Não encontrado");
+    try {
+      await api.post("/todos", {
+        name: input,
+      });
+      fetchData();
+    } catch (e) {
+      console.log(e);
+      alert("Erro");
     }
-    await api.post("/todos", {
-      name: input,
-    });
-    getTodos();
   }
 
   async function removeTodo(todo) {
     const res = confirm("Deseja realmente excluir?");
-    if (!res) {
-      return;
+    if (!res) return;
+    try {
+      await api.delete(`/todos/${todo.id}`);
+      fetchData();
+    } catch (e) {
+      console.log(e);
+      alert("Erro");
     }
-    await api.delete(`/todos/${todo.id}`);
-    getTodos();
   }
 
   async function updateTodo(todo) {
     /* TODO: Improve this */
     const res = prompt("Para qual nome deseja alterar?");
-    await api.put("/todos", {
-      id: todo.id,
-      name: res,
-    });
-    getTodos();
+    try {
+      await api.put("/todos", {
+        id: todo.id,
+        name: res,
+      });
+      fetchData();
+    } catch (e) {
+      console.log(e);
+      alert("Erro");
+    }
   }
 
   /* TODO: Olhar se isso está funcionando direito quando a internet voltar */
@@ -51,8 +62,10 @@ function App() {
         id: todo.id,
         status: isCompleted,
       });
+      fetchData();
     } catch (e) {
       console.log(e);
+      alert("Erro");
     }
   }
   //#endregion
@@ -72,8 +85,19 @@ function App() {
               key={todo.id}
               className="container-todo"
               onClick={() => updateTodoStatus(todo)}
-              style={{ backgroundColor: todo.status ? "green" : "red" }}
+              style={{
+                backgroundColor: "#A0AEC0",
+              }}
             >
+              <div
+                style={{
+                  backgroundColor: todo.status ? "green" : "red",
+                  width: 10,
+                  height: 10,
+                  textAlign: "right",
+                  borderRadius: "50px",
+                }}
+              ></div>
               <div className="content-todo">
                 <p className="text-todo">{todo.name}</p>
               </div>
@@ -92,7 +116,7 @@ function App() {
   };
 
   useEffect(() => {
-    getTodos();
+    fetchData();
   }, []);
 
   return (
