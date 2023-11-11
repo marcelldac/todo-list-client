@@ -10,8 +10,13 @@ function App() {
 
   //#region Crud functions
   async function fetchData() {
-    const { data } = await api.get("/todos");
-    setTodos(data);
+    try {
+      const { data } = await api.get("/todos");
+      setTodos(data);
+    } catch (e) {
+      console.log(`Erro ao carregar tasks: ${e}`);
+      alert("Não foi possível carregar as tasks.");
+    }
   }
 
   async function addTodo() {
