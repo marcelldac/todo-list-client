@@ -5,7 +5,7 @@ import { api } from "./api/api";
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [input, setInput] = useState();
+  const [input, setInput] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
   //#region Crud functions
@@ -84,22 +84,11 @@ function App() {
       <>
         {todos.map((todo) => {
           return (
-            <div
-              key={todo.id}
-              className="container-todo"
-              onClick={() => updateTodoStatus(todo)}
-              style={{
-                backgroundColor: "#A0AEC0",
-              }}
-            >
+            <div key={todo.id} className="container-todo">
               <div
-                style={{
-                  backgroundColor: todo.status ? "green" : "red",
-                  width: 10,
-                  height: 10,
-                  textAlign: "right",
-                  borderRadius: "50px",
-                }}
+                className="dot-status-todo"
+                style={{ backgroundColor: todo.status ? "green" : "red" }}
+                onClick={() => updateTodoStatus(todo)}
               ></div>
               <div className="content-todo">
                 <p className="text-todo">{todo.name}</p>
