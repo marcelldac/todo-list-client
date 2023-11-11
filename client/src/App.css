@@ -6,10 +6,16 @@
 }
 
 .container-todo {
-  background-color: white;
+  background-color: #a0aec0;
   padding: 40px;
   border-radius: 40px;
   margin-bottom: 40px;
+}
+
+.dot-status-todo {
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
   cursor: pointer;
 }
 
