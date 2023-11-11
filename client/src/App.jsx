@@ -57,7 +57,6 @@ function App() {
     }
   }
 
-  /* TODO: Olhar se isso está funcionando direito quando a internet voltar */
   async function updateTodoStatus(todo) {
     setIsCompleted(!isCompleted);
     try {
