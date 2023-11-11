@@ -117,6 +117,7 @@ function App() {
               <button
                 onClick={() => {
                   const newName = prompt("Para qual nome deseja alterar?");
+                  if (!newName) return;
                   updateTodo(todo, newName);
                 }}
                 style={{
