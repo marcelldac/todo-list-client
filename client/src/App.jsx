@@ -39,13 +39,11 @@ function App() {
     }
   }
 
-  async function updateTodo(todo) {
-    /* TODO: Improve this */
-    const res = prompt("Para qual nome deseja alterar?");
+  async function updateTodo(todo, name) {
     try {
       await api.put("/todos", {
         id: todo.id,
-        name: res,
+        name,
       });
       fetchData();
     } catch (e) {
@@ -107,7 +105,14 @@ function App() {
               >
                 Remover
               </button>
-              <button onClick={() => updateTodo(todo)}>Editar</button>
+              <button
+                onClick={() => {
+                  const newName = prompt("Para qual nome deseja alterar?");
+                  updateTodo(todo, newName);
+                }}
+              >
+                Editar
+              </button>
             </div>
           );
         })}
