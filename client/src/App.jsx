@@ -1,36 +1,33 @@
-import './App.css'
-import { useEffect, useState } from 'react'
+import "./App.css";
+import { useEffect, useState } from "react";
 
-import { api } from './api/api';
-
-
+import { api } from "./api/api";
 
 function App() {
-
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState();
   const [isCompleted, setIsCompleted] = useState(false);
 
   //#region Crud functions
   async function getTodos() {
-    const { data } = await api.get('/todos');
+    const { data } = await api.get("/todos");
     setTodos(data);
   }
 
   async function addTodo() {
     if (!input) {
-      alert('Não encontrado')
-    };
-    await api.post('/todos', {
+      alert("Não encontrado");
+    }
+    await api.post("/todos", {
       name: input,
     });
     getTodos();
   }
 
   async function removeTodo(todo) {
-    const res = confirm('Deseja realmente excluir?')
+    const res = confirm("Deseja realmente excluir?");
     if (!res) {
-      return
+      return;
     }
     await api.delete(`/todos/${todo.id}`);
     getTodos();
@@ -38,8 +35,8 @@ function App() {
 
   async function updateTodo(todo) {
     /* TODO: Improve this */
-    const res = prompt('Para qual nome deseja alterar?');
-    await api.put('/todos', {
+    const res = prompt("Para qual nome deseja alterar?");
+    await api.put("/todos", {
       id: todo.id,
       name: res,
     });
@@ -50,66 +47,72 @@ function App() {
   async function updateTodoStatus(todo) {
     setIsCompleted(!isCompleted);
     try {
-      await api.put('/todos', {
+      await api.put("/todos", {
         id: todo.id,
-        status: isCompleted
+        status: isCompleted,
       });
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-
-
-  };
+  }
   //#endregion
 
   function handleSubmit(e) {
     e.preventDefault();
     addTodo();
-    setInput('');
+    setInput("");
   }
 
   const MapTodos = ({ todos }) => {
     return (
       <>
-        {
-          todos.map((todo) => {
-            return (
-              <div className='container-todo' onClick={() => updateTodoStatus(todo)} style={{ backgroundColor: todo.status ? 'green' : 'red' }}>
-                <div className='content-todo'>
-                  <p className='text-todo'>{todo.name}</p>
-                </div>
-                <button className='remove-btn-todo' onClick={() => removeTodo(todo)}>Remover</button>
-                <button onClick={() => updateTodo(todo)}>Editar</button>
+        {todos.map((todo) => {
+          return (
+            <div
+              key={todo.id}
+              className="container-todo"
+              onClick={() => updateTodoStatus(todo)}
+              style={{ backgroundColor: todo.status ? "green" : "red" }}
+            >
+              <div className="content-todo">
+                <p className="text-todo">{todo.name}</p>
               </div>
-            )
-          })
-        }
+              <button
+                className="remove-btn-todo"
+                onClick={() => removeTodo(todo)}
+              >
+                Remover
+              </button>
+              <button onClick={() => updateTodo(todo)}>Editar</button>
+            </div>
+          );
+        })}
       </>
     );
   };
 
   useEffect(() => {
     getTodos();
-  }, [])
+  }, []);
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className='form-header-container'>
+        <div className="form-header-container">
           <input
             onChange={(event) => {
-              setInput(event.target.value)
+              setInput(event.target.value);
               console.log(input);
             }}
             value={input}
-            className='form-input'
+            className="form-input"
           />
-          <button type='submit'>Add Task</button>
+          <button type="submit">Add Task</button>
         </div>
       </form>
       <MapTodos todos={todos} />
-    </div >
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
