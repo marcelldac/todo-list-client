@@ -22,8 +22,8 @@ function App() {
       });
       fetchData();
     } catch (e) {
-      console.log(e);
-      alert("Erro");
+      console.log(`Erro ao adicionar task: ${e}`);
+      alert("Não foi possível adicionar a task.");
     }
   }
 
@@ -34,8 +34,8 @@ function App() {
       await api.delete(`/todos/${todo.id}`);
       fetchData();
     } catch (e) {
-      console.log(e);
-      alert("Erro");
+      console.log(`Erro ao remover task: ${e}`);
+      alert("Não foi possível remover a task.");
     }
   }
 
@@ -47,8 +47,8 @@ function App() {
       });
       fetchData();
     } catch (e) {
-      console.log(e);
-      alert("Erro");
+      console.log(`Erro ao atualizar task: ${e}`);
+      alert("Não foi possível atualizar a task.");
     }
   }
 
@@ -62,8 +62,8 @@ function App() {
       });
       fetchData();
     } catch (e) {
-      console.log(e);
-      alert("Erro");
+      console.log(`Erro ao atualizar status da task: ${e}`);
+      alert("Não foi possível atualizar o status da task.");
     }
   }
   //#endregion
