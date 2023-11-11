@@ -42,5 +42,7 @@
 .form-input {
   height: 30px;
   margin-bottom: 10px;
+  border-radius: 50px;
   font-size: medium;
+  border: none;
 }
