@@ -144,9 +144,8 @@ function App() {
       <form onSubmit={handleSubmit}>
         <div className="form-header-container">
           <input
-            onChange={(event) => {
-              setInput(event.target.value);
-              console.log(input);
+            onChange={(e) => {
+              setInput(e.target.value);
             }}
             value={input}
             className="form-input"
