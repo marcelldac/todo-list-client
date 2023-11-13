@@ -1,17 +1,26 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 //#region Create Todo
 
 exports.create = async (req, res) => {
   const { name } = req.body;
+
+  const taskAlreadyExists = await prisma.todo.findUnique({
+    where: name,
+  });
+
+  if (taskAlreadyExists) {
+    return res.status(500).json({ error: "Task already exists" });
+  }
+
   const todo = await prisma.todo.create({
     data: {
       name,
     },
   });
   return res.status(201).json(todo);
-}
+};
 
 //#endregion
 
@@ -20,7 +29,7 @@ exports.create = async (req, res) => {
 exports.read = async (req, res) => {
   const todos = await prisma.todo.findMany();
   res.status(200).json(todos);
-}
+};
 
 //#endregion
 
@@ -36,19 +45,19 @@ exports.update = async (req, res) => {
   const todoAlreadyExists = await prisma.todo.findUnique({ where: { id } });
 
   if (!todoAlreadyExists) {
-    return res.status(404).json("Todo not exists")
+    return res.status(404).json("Todo not exists");
   }
 
   const todo = await prisma.todo.update({
     where: {
-      id
+      id,
     },
     data: {
       name,
-      status
-    }
+      status,
+    },
   });
-  return res.status(200).json(todo)
+  return res.status(200).json(todo);
 };
 
 //#endregion
@@ -63,7 +72,9 @@ exports.delete = async (req, res) => {
     return res.status(400).json("Id is mandatory");
   }
 
-  const todoAlreadyExist = await prisma.todo.findUnique({ where: { id: newId } });
+  const todoAlreadyExist = await prisma.todo.findUnique({
+    where: { id: newId },
+  });
 
   if (!todoAlreadyExist) {
     return res.status(404).json("Todo not found");
