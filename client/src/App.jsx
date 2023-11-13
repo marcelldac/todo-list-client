@@ -11,7 +11,7 @@ function App() {
   //#region Crud functions
   async function fetchData() {
     try {
-      const { data } = await api.get("/todos");
+      const { data } = await api.get("/tasks");
       setTodos(data);
     } catch (e) {
       console.log(`Erro ao carregar tasks: ${e}`);
