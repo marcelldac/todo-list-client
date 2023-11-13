@@ -7,5 +7,10 @@ describe("tasks", () => {
     cy.get(".form-input").type("Dar aula pro meu aluno preferido.");
 
     cy.get(".form-header-container > button").click();
+    /* 
+    Cypress não oferece suporte ao xpath (tem plugin para oferecer)
+    XPATH CODE: //button[contains(text(), "Add Task")]
+    CYPRESS ALTERNATIVE: cy.contains('button', 'Add Task').click()
+    */
   });
 });
