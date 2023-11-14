@@ -4,16 +4,7 @@ describe("tasks", () => {
   const taskName = "Falar que amo Nutaia";
 
   it("should registry a new task", () => {
-    cy.request({
-      url: "http://localhost:3001/helper/tasks",
-      method: "DELETE",
-      body: {
-        name: taskName,
-      },
-    }).then((res) => {
-      expect(res.status).to.eq(204);
-    });
-
+    cy.removeTaskByName(taskName);
     cy.createTask(taskName);
 
     /* 
@@ -32,16 +23,7 @@ describe("tasks", () => {
   it("should not allow duplicated tasks", () => {
     const taskName = "Dar comida pra Django";
 
-    cy.request({
-      url: "http://localhost:3001/helper/tasks",
-      method: "DELETE",
-      body: {
-        name: taskName,
-      },
-    }).then((res) => {
-      expect(res.status).to.eq(204);
-    });
-
+    cy.removeTaskByName(taskName);
     cy.createTask(taskName);
     cy.createTask(taskName);
 
@@ -57,4 +39,16 @@ Cypress.Commands.add("createTask", (taskName) => {
   cy.get(".form-input").type(taskName);
 
   cy.get(".form-header-container > button").click();
+});
+
+Cypress.Commands.add("removeTaskByName", (taskName) => {
+  cy.request({
+    url: "http://localhost:3001/helper/tasks",
+    method: "DELETE",
+    body: {
+      name: taskName,
+    },
+  }).then((res) => {
+    expect(res.status).to.eq(204);
+  });
 });
