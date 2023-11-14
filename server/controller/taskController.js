@@ -92,7 +92,44 @@ exports.delete = async (req, res) => {
 
   await prisma.task.delete({ where: { id: intID } });
 
-  return res.status(200).json({ message: `Task with id ${intID} was deleted` });
+  return res
+    .status(200)
+    .json({ message: `Task with id '${intID}' was deleted successfully` });
+};
+
+//#endregion
+
+//#region Delete Task By Name
+/* The `exports.deleteByName` function is responsible for deleting a task from the database based on
+its name. It receives a request object (`req`) and a response object (`res`) as parameters. */
+exports.deleteByName = async (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: "Task name is required" });
+  }
+
+  const taskExists = await prisma.task.findUnique({
+    where: {
+      name,
+    },
+  });
+
+  if (!taskExists) {
+    return res
+      .status(400)
+      .json({ error: "Task with this name does not exist" });
+  }
+
+  await prisma.task.delete({
+    where: {
+      name,
+    },
+  });
+
+  return res
+    .status(200)
+    .json({ message: `Task with name '${name}' was deleted successfully` });
 };
 
 //#endregion
