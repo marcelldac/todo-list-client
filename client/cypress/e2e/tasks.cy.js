@@ -14,11 +14,7 @@ describe("tasks", () => {
       expect(res.status).to.eq(204);
     });
 
-    cy.visit("http://localhost:5173");
-
-    cy.get(".form-input").type(taskName);
-
-    cy.get(".form-header-container > button").click();
+    cy.createTask(taskName);
 
     /* 
     Cypress não oferece suporte ao xpath (tem plugin para oferecer)
@@ -46,18 +42,19 @@ describe("tasks", () => {
       expect(res.status).to.eq(204);
     });
 
-    cy.visit("http://localhost:5173");
-
-    cy.get(".form-input").type(taskName);
-    cy.get(".form-header-container > button").click();
-
-    cy.visit("http://localhost:5173");
-
-    cy.get(".form-input").type(taskName);
-    cy.get(".form-header-container > button").click();
+    cy.createTask(taskName);
+    cy.createTask(taskName);
 
     cy.contains("div", "Já existe uma task com esse nome!")
       .should("be.visible")
       .should("have.text", "Já existe uma task com esse nome!");
   });
+});
+
+Cypress.Commands.add("createTask", (taskName) => {
+  cy.visit("http://localhost:5173");
+
+  cy.get(".form-input").type(taskName);
+
+  cy.get(".form-header-container > button").click();
 });
