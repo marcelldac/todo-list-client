@@ -107,6 +107,7 @@ function App() {
               </p>
               <div>
                 <button
+                  id="delete-task-button"
                   onClick={() => removeTask(task)}
                   style={{
                     color: task.isCompleted ? "#4A5568" : "#fff",
@@ -117,6 +118,7 @@ function App() {
                   <RiDeleteBack2Fill />
                 </button>
                 <button
+                  id="edit-task-button"
                   onClick={() => {
                     const newName = prompt("Para qual nome deseja alterar?");
                     if (!newName) return;
