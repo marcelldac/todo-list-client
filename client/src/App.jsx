@@ -1,5 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import { BiSolidEditAlt } from "react-icons/bi";
+import { RiDeleteBack2Fill } from "react-icons/ri";
 
 import { api } from "./api/api";
 
@@ -90,44 +92,46 @@ function App() {
             >
               <div
                 className="dot-status-todo"
-                style={{ backgroundColor: task.isCompleted ? "green" : "red" }}
+                style={{
+                  backgroundColor: task.isCompleted ? "green" : "red",
+                }}
                 onClick={() => updateTaskStatus(task)}
               ></div>
-              <div className="content-todo">
-                <p
-                  className="text-todo"
+              <p
+                className="task-name"
+                style={{
+                  color: task.isCompleted ? "#4A5568" : "#171923",
+                }}
+              >
+                {task.name}
+              </p>
+              <div>
+                <button
+                  onClick={() => removeTask(task)}
                   style={{
-                    color: task.isCompleted ? "#4A5568" : "#171923",
+                    color: task.isCompleted ? "#4A5568" : "#fff",
+                    cursor: task.isCompleted ? "inherit" : "pointer",
                   }}
+                  disabled={task.isCompleted}
                 >
-                  {task.name}
-                </p>
+                  <RiDeleteBack2Fill />
+                </button>
+                <button
+                  onClick={() => {
+                    const newName = prompt("Para qual nome deseja alterar?");
+                    if (!newName) return;
+                    updateTaskName(task, newName);
+                  }}
+                  style={{
+                    color: task.isCompleted ? "#4A5568" : "#fff",
+                    cursor: task.isCompleted ? "inherit" : "pointer",
+                    marginLeft: 10,
+                  }}
+                  disabled={task.isCompleted}
+                >
+                  <BiSolidEditAlt />
+                </button>
               </div>
-              <button
-                className="remove-btn-todo"
-                onClick={() => removeTask(task)}
-                style={{
-                  color: task.isCompleted ? "#4A5568" : "#fff",
-                  cursor: task.isCompleted ? "inherit" : "pointer",
-                }}
-                disabled={task.isCompleted}
-              >
-                Remover
-              </button>
-              <button
-                onClick={() => {
-                  const newName = prompt("Para qual nome deseja alterar?");
-                  if (!newName) return;
-                  updateTaskName(task, newName);
-                }}
-                style={{
-                  color: task.isCompleted ? "#4A5568" : "#fff",
-                  cursor: task.isCompleted ? "inherit" : "pointer",
-                }}
-                disabled={task.isCompleted}
-              >
-                Editar
-              </button>
             </div>
           );
         })}

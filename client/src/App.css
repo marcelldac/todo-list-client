@@ -1,7 +1,5 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -10,6 +8,11 @@
   padding: 40px;
   border-radius: 40px;
   margin-bottom: 40px;
+  height: 5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
 }
 
 .dot-status-todo {
@@ -17,20 +20,7 @@
   height: 10px;
   border-radius: 50px;
   cursor: pointer;
-}
-
-.content-todo {
-  display: flex;
-  justify-content: center;
-}
-
-.text-todo {
-  color: black;
-  width: auto;
-}
-
-.remove-btn-todo {
-  margin-right: 10px;
+  margin-top: -100px;
 }
 
 .form-header-container {
@@ -45,4 +35,8 @@
   border-radius: 50px;
   font-size: medium;
   border: none;
+}
+
+.task-name {
+  margin-inline: 10px;
 }
