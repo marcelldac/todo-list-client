@@ -1,7 +1,13 @@
 import "./App.css";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { useEffect, useState } from "react";
+
 import { BiSolidEditAlt } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
+import { FaRegThumbsDown } from "react-icons/fa6";
+import { FaRegThumbsUp } from "react-icons/fa";
 
 import { api } from "./api/api";
 
@@ -10,6 +16,8 @@ function App() {
   const [input, setInput] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
+  const SwalModal = withReactContent(Swal);
+
   //#region Crud functions
   async function fetchData() {
     try {
@@ -17,15 +25,29 @@ function App() {
       setTasks(data);
     } catch (e) {
       console.log(`Erro ao carregar tasks: ${e}`);
-      alert("Não foi possível carregar as tasks.");
+      SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Erro ao carregar Tasks!",
+        footer: "Tente novamente mais tarde.",
+      });
     }
   }
 
   async function addTask() {
-    if (!input) return alert("Uma task não estar vazia.");
+    if (!input)
+      return SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Uma task não pode estar vazia!",
+      });
 
     if (tasks.some((task) => task.name === input)) {
-      return alert("Ja existe uma task com esse nome.");
+      return SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Já existe uma task com esse nome!",
+      });
     }
 
     try {
@@ -35,19 +57,46 @@ function App() {
       fetchData();
     } catch (e) {
       console.log(`Erro ao adicionar task: ${e}`);
-      alert("Não foi possível adicionar a task.");
+      SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Erro ao adicionar task!",
+        footer: "Tente novamente mais tarde.",
+      });
     }
   }
 
+  async function confirmRemoveTask() {
+    const res = await SwalModal.fire({
+      title: "Deseja realmente deletar a task?",
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: <FaRegThumbsUp />,
+      confirmButtonAriaLabel: "Confirmar",
+      cancelButtonText: <FaRegThumbsDown />,
+      cancelButtonAriaLabel: "Cancelar",
+    });
+    return res.isConfirmed;
+  }
+
   async function removeTask(todo) {
-    const res = confirm("Deseja realmente excluir?");
-    if (!res) return;
+    const isConfirmed = await confirmRemoveTask();
+
+    if (!isConfirmed) return;
+
     try {
       await api.delete(`/tasks/${todo.id}`);
       fetchData();
     } catch (e) {
       console.log(`Erro ao remover task: ${e}`);
-      alert("Não foi possível remover a task.");
+      SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Não foi possível remover a task!",
+        footer: "Tente novamente mais tarde.",
+      });
     }
   }
 
@@ -59,7 +108,12 @@ function App() {
       fetchData();
     } catch (e) {
       console.log(`Erro ao atualizar task: ${e}`);
-      alert("Não foi possível atualizar a task.");
+      SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Não foi possível atualizar a task!",
+        footer: "Tente novamente mais tarde.",
+      });
     }
   }
 
@@ -72,7 +126,12 @@ function App() {
       fetchData();
     } catch (e) {
       console.log(`Erro ao atualizar status da task: ${e}`);
-      alert("Não foi possível atualizar o status da task.");
+      SwalModal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Não foi possível atualizar o status da task!",
+        footer: "Tente novamente mais tarde.",
+      });
     }
   }
   //#endregion
