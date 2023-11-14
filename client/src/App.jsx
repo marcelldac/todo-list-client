@@ -22,7 +22,12 @@ function App() {
   }
 
   async function addTask() {
-    if (!input) alert("Não encontrado");
+    if (!input) return alert("Uma task não estar vazia.");
+
+    if (tasks.some((task) => task.name === input)) {
+      return alert("Ja existe uma task com esse nome.");
+    }
+
     try {
       await api.post("/tasks", {
         name: input,
