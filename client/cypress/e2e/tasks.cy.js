@@ -1,12 +1,14 @@
 /// <reference types="cypress" />
 
 describe("tasks", () => {
+  const taskName = "Falar que amo Nutaia";
+
   it("should registry a new task", () => {
     cy.request({
       url: "http://localhost:3001/helper/tasks",
       method: "DELETE",
       body: {
-        name: "Falar que amo Nutaia",
+        name: taskName,
       },
     }).then((res) => {
       expect(res.status).to.eq(204);
@@ -14,7 +16,7 @@ describe("tasks", () => {
 
     cy.visit("http://localhost:5173");
 
-    cy.get(".form-input").type("Falar que amo Nutaia");
+    cy.get(".form-input").type(taskName);
 
     cy.get(".form-header-container > button").click();
 
@@ -32,11 +34,13 @@ describe("tasks", () => {
   });
 
   it("should not allow duplicated tasks", () => {
+    const taskName = "Dar comida pra Django";
+
     cy.request({
       url: "http://localhost:3001/helper/tasks",
       method: "DELETE",
       body: {
-        name: "Dar comida pra Django",
+        name: taskName,
       },
     }).then((res) => {
       expect(res.status).to.eq(204);
@@ -44,12 +48,12 @@ describe("tasks", () => {
 
     cy.visit("http://localhost:5173");
 
-    cy.get(".form-input").type("Dar comida pra Django");
+    cy.get(".form-input").type(taskName);
     cy.get(".form-header-container > button").click();
 
     cy.visit("http://localhost:5173");
 
-    cy.get(".form-input").type("Dar comida pra Django");
+    cy.get(".form-input").type(taskName);
     cy.get(".form-header-container > button").click();
 
     cy.contains("div", "Já existe uma task com esse nome!")
