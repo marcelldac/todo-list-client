@@ -32,23 +32,3 @@ describe("tasks", () => {
       .should("have.text", "Já existe uma task com esse nome!");
   });
 });
-
-Cypress.Commands.add("createTask", (taskName) => {
-  cy.visit("http://localhost:5173");
-
-  cy.get(".form-input").type(taskName);
-
-  cy.get(".form-header-container > button").click();
-});
-
-Cypress.Commands.add("removeTaskByName", (taskName) => {
-  cy.request({
-    url: "http://localhost:3001/helper/tasks",
-    method: "DELETE",
-    body: {
-      name: taskName,
-    },
-  }).then((res) => {
-    expect(res.status).to.eq(204);
-  });
-});
