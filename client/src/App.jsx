@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { api } from "./api/api";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -12,14 +12,14 @@ function App() {
   async function fetchData() {
     try {
       const { data } = await api.get("/tasks");
-      setTodos(data);
+      setTasks(data);
     } catch (e) {
       console.log(`Erro ao carregar tasks: ${e}`);
       alert("Não foi possível carregar as tasks.");
     }
   }
 
-  async function addTodo() {
+  async function addTask() {
     if (!input) alert("Não encontrado");
     try {
       await api.post("/tasks", {
@@ -32,7 +32,7 @@ function App() {
     }
   }
 
-  async function removeTodo(todo) {
+  async function removeTask(todo) {
     const res = confirm("Deseja realmente excluir?");
     if (!res) return;
     try {
@@ -44,9 +44,9 @@ function App() {
     }
   }
 
-  async function updateTodo(todo, name) {
+  async function updateTaskName(task, name) {
     try {
-      await api.put(`/tasks/${todo.id}`, {
+      await api.put(`/tasks/${task.id}`, {
         name,
       });
       fetchData();
@@ -56,10 +56,10 @@ function App() {
     }
   }
 
-  async function updateTodoStatus(todo) {
+  async function updateTaskStatus(task) {
     setIsCompleted(!isCompleted);
     try {
-      await api.put(`/tasks/${todo.id}`, {
+      await api.put(`/tasks/${task.id}`, {
         isCompleted,
       });
       fetchData();
@@ -72,45 +72,45 @@ function App() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    addTodo();
+    addTask();
     setInput("");
   }
 
-  const MapTodos = ({ todos }) => {
+  const Tasks = ({ tasks }) => {
     return (
       <>
-        {todos.map((todo) => {
+        {tasks.map((task) => {
           return (
             <div
-              key={todo.id}
+              key={task.id}
               className="container-todo"
               style={{
-                backgroundColor: todo.isCompleted ? "#718096" : "#a0aec0",
+                backgroundColor: task.isCompleted ? "#718096" : "#a0aec0",
               }}
             >
               <div
                 className="dot-status-todo"
-                style={{ backgroundColor: todo.isCompleted ? "green" : "red" }}
-                onClick={() => updateTodoStatus(todo)}
+                style={{ backgroundColor: task.isCompleted ? "green" : "red" }}
+                onClick={() => updateTaskStatus(task)}
               ></div>
               <div className="content-todo">
                 <p
                   className="text-todo"
                   style={{
-                    color: todo.isCompleted ? "#4A5568" : "#171923",
+                    color: task.isCompleted ? "#4A5568" : "#171923",
                   }}
                 >
-                  {todo.name}
+                  {task.name}
                 </p>
               </div>
               <button
                 className="remove-btn-todo"
-                onClick={() => removeTodo(todo)}
+                onClick={() => removeTask(task)}
                 style={{
-                  color: todo.isCompleted ? "#4A5568" : "#fff",
-                  cursor: todo.isCompleted ? "inherit" : "pointer",
+                  color: task.isCompleted ? "#4A5568" : "#fff",
+                  cursor: task.isCompleted ? "inherit" : "pointer",
                 }}
-                disabled={todo.isCompleted}
+                disabled={task.isCompleted}
               >
                 Remover
               </button>
@@ -118,13 +118,13 @@ function App() {
                 onClick={() => {
                   const newName = prompt("Para qual nome deseja alterar?");
                   if (!newName) return;
-                  updateTodo(todo, newName);
+                  updateTaskName(task, newName);
                 }}
                 style={{
-                  color: todo.isCompleted ? "#4A5568" : "#fff",
-                  cursor: todo.isCompleted ? "inherit" : "pointer",
+                  color: task.isCompleted ? "#4A5568" : "#fff",
+                  cursor: task.isCompleted ? "inherit" : "pointer",
                 }}
-                disabled={todo.isCompleted}
+                disabled={task.isCompleted}
               >
                 Editar
               </button>
@@ -153,7 +153,7 @@ function App() {
           <button type="submit">Add Task</button>
         </div>
       </form>
-      <MapTodos todos={todos} />
+      <Tasks tasks={tasks} />
     </div>
   );
 }
