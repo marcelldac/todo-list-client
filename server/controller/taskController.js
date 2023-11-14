@@ -43,28 +43,34 @@ exports.read = async (req, res) => {
 //#region Update Todo
 
 exports.update = async (req, res) => {
-  const { name, id, status } = req.body;
+  const { id } = req.params;
+  const { name, isCompleted } = req.body;
 
   if (!id) {
     return res.status(400).json("Id is mandatory");
   }
 
-  const todoAlreadyExists = await prisma.todo.findUnique({ where: { id } });
+  const intID = parseInt(id);
 
-  if (!todoAlreadyExists) {
-    return res.status(404).json("Todo not exists");
+  const taskAlreadyExists = await prisma.task.findUnique({
+    where: { id: intID },
+  });
+
+  if (!taskAlreadyExists) {
+    return res.status(404).json("Task does not exists");
   }
 
-  const todo = await prisma.todo.update({
+  const task = await prisma.task.update({
     where: {
-      id,
+      id: intID,
     },
     data: {
       name,
-      status,
+      isCompleted,
     },
   });
-  return res.status(200).json(todo);
+
+  return res.status(200).json(task);
 };
 
 //#endregion
@@ -73,23 +79,20 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const { id } = req.params;
-  const newId = parseInt(id);
 
-  if (!newId) {
-    return res.status(400).json("Id is mandatory");
-  }
+  const intID = parseInt(id);
 
-  const todoAlreadyExist = await prisma.todo.findUnique({
-    where: { id: newId },
+  const taskAlreadyExist = await prisma.task.findUnique({
+    where: { id: intID },
   });
 
-  if (!todoAlreadyExist) {
-    return res.status(404).json("Todo not found");
+  if (!taskAlreadyExist) {
+    return res.status(404).json({ error: "Task not found" });
   }
 
-  await prisma.todo.delete({ where: { id: newId } });
+  await prisma.task.delete({ where: { id: intID } });
 
-  return res.status(200).send();
+  return res.status(200).json({ message: `Task with id ${intID} was deleted` });
 };
 
 //#endregion
