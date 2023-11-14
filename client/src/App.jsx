@@ -48,7 +48,6 @@ function App() {
     try {
       await api.put(`/tasks/${todo.id}`, {
         name,
-        isCompleted,
       });
       fetchData();
     } catch (e) {
