@@ -2,6 +2,8 @@
 
 describe("tasks", () => {
   it("should registry a new task", () => {
+    cy.visit("http://localhost:5173");
+
     cy.request({
       url: "http://localhost:3001/helper/tasks",
       method: "DELETE",
