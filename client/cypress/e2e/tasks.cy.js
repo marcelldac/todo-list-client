@@ -30,4 +30,14 @@ describe("tasks", () => {
 
     cy.contains(".task-name", "Falar que amo Nutaia").should("be.visible");
   });
+
+  it("should not allow duplicated tasks", () => {
+    cy.visit("http://localhost:5173");
+    cy.get(".form-input").type("Falar que amo Nutaia");
+    cy.get(".form-header-container > button").click();
+
+    cy.contains("div", "Já existe uma task com esse nome!")
+      .should("be.visible")
+      .should("have.text", "Já existe uma task com esse nome!");
+  });
 });
