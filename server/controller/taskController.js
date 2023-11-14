@@ -2,7 +2,8 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 //#region Create Task
-
+/* The `exports.create` function is responsible for creating a new task in the database. It receives a
+request object (`req`) and a response object (`res`) as parameters. */
 exports.create = async (req, res) => {
   const { name } = req.body;
 
@@ -27,7 +28,10 @@ exports.create = async (req, res) => {
 //#endregion
 
 //#region Read Tasks
-
+/* The `exports.read` function is responsible for retrieving all tasks from the database. It uses the
+`prisma.task.findMany()` method to fetch all tasks. If no tasks are found, it returns a 404 status
+code with an error message. If tasks are found, it returns a 200 status code with the tasks in JSON
+format. */
 exports.read = async (req, res) => {
   const tasks = await prisma.task.findMany();
 
@@ -41,14 +45,10 @@ exports.read = async (req, res) => {
 //#endregion
 
 //#region Update Todo
-
+/* The `exports.update` function is responsible for updating a task in the database. */
 exports.update = async (req, res) => {
   const { id } = req.params;
   const { name, isCompleted } = req.body;
-
-  if (!id) {
-    return res.status(400).json("Id is mandatory");
-  }
 
   const intID = parseInt(id);
 
@@ -57,7 +57,7 @@ exports.update = async (req, res) => {
   });
 
   if (!taskAlreadyExists) {
-    return res.status(404).json("Task does not exists");
+    return res.status(404).json({ message: "Task does not exists" });
   }
 
   const task = await prisma.task.update({
@@ -76,7 +76,7 @@ exports.update = async (req, res) => {
 //#endregion
 
 //#region Delete Todo
-
+/* The `exports.delete` function is responsible for deleting a task from the database. */
 exports.delete = async (req, res) => {
   const { id } = req.params;
 
