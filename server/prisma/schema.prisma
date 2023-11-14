@@ -10,8 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Todo {
+model Task {
   id     Int     @id @default(autoincrement())
-  status Boolean @default(false)
-  name   String
+  isCompleted Boolean @default(false)
+  name   String @unique
 }
