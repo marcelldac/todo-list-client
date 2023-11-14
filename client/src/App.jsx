@@ -61,7 +61,6 @@ function App() {
     setIsCompleted(!isCompleted);
     try {
       await api.put(`/tasks/${todo.id}`, {
-        id: todo.id,
         isCompleted,
       });
       fetchData();
@@ -86,18 +85,20 @@ function App() {
             <div
               key={todo.id}
               className="container-todo"
-              style={{ backgroundColor: todo.status ? "#718096" : "#a0aec0" }}
+              style={{
+                backgroundColor: todo.isCompleted ? "#718096" : "#a0aec0",
+              }}
             >
               <div
                 className="dot-status-todo"
-                style={{ backgroundColor: todo.status ? "green" : "red" }}
+                style={{ backgroundColor: todo.isCompleted ? "green" : "red" }}
                 onClick={() => updateTodoStatus(todo)}
               ></div>
               <div className="content-todo">
                 <p
                   className="text-todo"
                   style={{
-                    color: todo.status ? "#4A5568" : "#171923",
+                    color: todo.isCompleted ? "#4A5568" : "#171923",
                   }}
                 >
                   {todo.name}
@@ -107,10 +108,10 @@ function App() {
                 className="remove-btn-todo"
                 onClick={() => removeTodo(todo)}
                 style={{
-                  color: todo.status ? "#4A5568" : "#fff",
-                  cursor: todo.status ? "inherit" : "pointer",
+                  color: todo.isCompleted ? "#4A5568" : "#fff",
+                  cursor: todo.isCompleted ? "inherit" : "pointer",
                 }}
-                disabled={todo.status}
+                disabled={todo.isCompleted}
               >
                 Remover
               </button>
@@ -121,10 +122,10 @@ function App() {
                   updateTodo(todo, newName);
                 }}
                 style={{
-                  color: todo.status ? "#4A5568" : "#fff",
-                  cursor: todo.status ? "inherit" : "pointer",
+                  color: todo.isCompleted ? "#4A5568" : "#fff",
+                  cursor: todo.isCompleted ? "inherit" : "pointer",
                 }}
-                disabled={todo.status}
+                disabled={todo.isCompleted}
               >
                 Editar
               </button>
