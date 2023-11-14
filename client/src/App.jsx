@@ -22,7 +22,7 @@ function App() {
   async function addTodo() {
     if (!input) alert("Não encontrado");
     try {
-      await api.post("/todos", {
+      await api.post("/tasks", {
         name: input,
       });
       fetchData();
@@ -36,7 +36,7 @@ function App() {
     const res = confirm("Deseja realmente excluir?");
     if (!res) return;
     try {
-      await api.delete(`/todos/${todo.id}`);
+      await api.delete(`/tasks/${todo.id}`);
       fetchData();
     } catch (e) {
       console.log(`Erro ao remover task: ${e}`);
@@ -46,9 +46,9 @@ function App() {
 
   async function updateTodo(todo, name) {
     try {
-      await api.put("/todos", {
-        id: todo.id,
+      await api.put(`/tasks/${todo.id}`, {
         name,
+        isCompleted,
       });
       fetchData();
     } catch (e) {
@@ -60,9 +60,9 @@ function App() {
   async function updateTodoStatus(todo) {
     setIsCompleted(!isCompleted);
     try {
-      await api.put("/todos", {
+      await api.put(`/tasks/${todo.id}`, {
         id: todo.id,
-        status: isCompleted,
+        isCompleted,
       });
       fetchData();
     } catch (e) {
