@@ -23,5 +23,11 @@ describe("tasks", () => {
     XPATH CODE: //button[contains(text(), "Add Task")]
     CYPRESS ALTERNATIVE: cy.contains('button', 'Add Task').click()
     */
+
+    /* cy.get(".task-name")
+      .should("be.visible")
+      .should("have.text", "Falar que amo Nutaia"); */
+
+    cy.contains(".task-name", "Falar que amo Nutaia").should("be.visible");
   });
 });
