@@ -1,9 +1,5 @@
 /// <reference types="cypress" />
 
-import { faker } from "@faker-js/faker";
-
-const fakeMusic = faker.music.genre();
-
 describe("tasks", () => {
   it("should registry a new task", () => {
     cy.request({
