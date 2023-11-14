@@ -13,7 +13,6 @@ describe("tasks", () => {
     }).then((res) => {
       expect(res.status).to.eq(204);
     });
-    cy.visit("http://localhost:5173");
 
     cy.get(".form-input").type("Falar que amo Nutaia");
 
