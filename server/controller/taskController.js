@@ -127,9 +127,7 @@ exports.deleteByName = async (req, res) => {
     },
   });
 
-  return res
-    .status(200)
-    .json({ message: `Task with name '${name}' was deleted successfully` });
+  return res.sendStatus(204);
 };
 
 //#endregion
