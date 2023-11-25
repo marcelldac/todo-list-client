@@ -104,6 +104,7 @@ function App() {
     try {
       await api.put(`/tasks/${task.id}`, {
         name,
+        isCompleted: false,
       });
       fetchData();
     } catch (e) {
@@ -117,7 +118,7 @@ function App() {
     }
   }
 
-  async function updateTaskStatus(task) {
+  /* async function updateTaskStatus(task) {
     setIsCompleted(!isCompleted);
     try {
       await api.put(`/tasks/${task.id}`, {
@@ -133,7 +134,8 @@ function App() {
         footer: "Tente novamente mais tarde.",
       });
     }
-  }
+  } */
+
   //#endregion
 
   function handleSubmit(e) {
@@ -154,13 +156,13 @@ function App() {
                 backgroundColor: task.isCompleted ? "#718096" : "#a0aec0",
               }}
             >
-              <div
+              {/* <div
                 className="dot-status-todo"
                 style={{
                   backgroundColor: task.isCompleted ? "green" : "red",
                 }}
                 onClick={() => updateTaskStatus(task)}
-              ></div>
+              ></div> */}
               <p
                 className="task-name"
                 style={{
