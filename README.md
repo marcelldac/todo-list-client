@@ -1,18 +1,20 @@
-# TODO App
+# How to install and configure the project?
 
-TODO App made with ReactJs, Nodejs and PostgreSQL
+## Client
 
-## Todo 🙃:
-
-Create a .env file with DATABASE_URL variable like this.
-
+```bash
+npm install
 ```
-DATABASE_URL=postgresql://youruser:yourpassword@host:port/dbname
+``` bash
+npm run dev
 ```
 
-### Default values:
+## Server
 
-- user: postgres
-- password: root
-- host: localhost
-- port: 5432
+ - Add a '.env' file to your environment (root directory).
+
+ - Configure your database using the command bellow. (using PostgreSQL):
+
+```prisma
+DATABASE_URL="postgresql://<username (default: postgres)>:<password>@<host (default:localhost)>:<port (default:5432)>/todos?schema=<schema (default:public)>"
+```
