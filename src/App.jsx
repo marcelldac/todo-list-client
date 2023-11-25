@@ -22,7 +22,7 @@ function App() {
   async function fetchData() {
     try {
       const { data } = await api.get("/tasks");
-      setTasks(data);
+      setTasks(data.tasks);
     } catch (e) {
       console.log(`Erro ao carregar tasks: ${e}`);
       SwalModal.fire({
