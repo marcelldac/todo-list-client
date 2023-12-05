@@ -14,8 +14,6 @@ import { api } from "./api/api";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
-  const [isCompleted, setIsCompleted] = useState(false);
-
   const SwalModal = withReactContent(Swal);
 
   //#region Crud functions
@@ -117,25 +115,6 @@ function App() {
       });
     }
   }
-
-  /* async function updateTaskStatus(task) {
-    setIsCompleted(!isCompleted);
-    try {
-      await api.put(`/tasks/${task.id}`, {
-        isCompleted,
-      });
-      fetchData();
-    } catch (e) {
-      console.log(`Erro ao atualizar status da task: ${e}`);
-      SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Não foi possível atualizar o status da task!",
-        footer: "Tente novamente mais tarde.",
-      });
-    }
-  } */
-
   //#endregion
 
   function handleSubmit(e) {
@@ -156,13 +135,6 @@ function App() {
                 backgroundColor: task.isCompleted ? "#718096" : "#a0aec0",
               }}
             >
-              {/* <div
-                className="dot-status-todo"
-                style={{
-                  backgroundColor: task.isCompleted ? "green" : "red",
-                }}
-                onClick={() => updateTaskStatus(task)}
-              ></div> */}
               <p
                 className="task-name"
                 style={{
