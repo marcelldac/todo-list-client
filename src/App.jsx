@@ -1,20 +1,16 @@
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import { useEffect, useState } from "react";
-
 import { BiSolidEditAlt } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
-import { FaRegThumbsDown } from "react-icons/fa6";
-import { FaRegThumbsUp } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
 
 import { api } from "./api/api";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
-  const SwalModal = withReactContent(Swal);
 
   //#region Crud functions
   async function fetchData() {
@@ -23,30 +19,17 @@ function App() {
       setTasks(data.tasks);
     } catch (e) {
       console.log(`Erro ao carregar tasks: ${e}`);
-      SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Erro ao carregar Tasks!",
-        footer: "Tente novamente mais tarde.",
+      toast.error("Erro ao carregar tasks!", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
     }
   }
 
   async function addTask() {
     if (!input)
-      return SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Uma task não pode estar vazia!",
+      return toast.warning("Oops! Uma task não pode ser vazia.", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
-
-    if (tasks.some((task) => task.name === input)) {
-      return SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Já existe uma task com esse nome!",
-      });
-    }
 
     try {
       await api.post("/tasks", {
@@ -55,45 +38,22 @@ function App() {
       fetchData();
     } catch (e) {
       console.log(`Erro ao adicionar task: ${e}`);
-      SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Erro ao adicionar task!",
-        footer: "Tente novamente mais tarde.",
+      toast.error("Não foi possível adicionar a task!", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
     }
   }
 
-  async function confirmRemoveTask() {
-    const res = await SwalModal.fire({
-      title: "Deseja realmente deletar a task?",
-      icon: "warning",
-      showCloseButton: true,
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: <FaRegThumbsUp />,
-      confirmButtonAriaLabel: "Confirmar",
-      cancelButtonText: <FaRegThumbsDown />,
-      cancelButtonAriaLabel: "Cancelar",
-    });
-    return res.isConfirmed;
-  }
-
   async function removeTask(todo) {
-    const isConfirmed = await confirmRemoveTask();
-
+    const isConfirmed = confirm("Deseja realmente deletar a task?");
     if (!isConfirmed) return;
-
     try {
       await api.delete(`/tasks/${todo.id}`);
       fetchData();
     } catch (e) {
       console.log(`Erro ao remover task: ${e}`);
-      SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Não foi possível remover a task!",
-        footer: "Tente novamente mais tarde.",
+      toast.error("Não foi possível remover a task!", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
     }
   }
@@ -107,11 +67,8 @@ function App() {
       fetchData();
     } catch (e) {
       console.log(`Erro ao atualizar task: ${e}`);
-      SwalModal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Não foi possível atualizar a task!",
-        footer: "Tente novamente mais tarde.",
+      toast.error("Não foi possível atualizar a task!", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
     }
   }
@@ -172,6 +129,7 @@ function App() {
                   <BiSolidEditAlt />
                 </button>
               </div>
+              <ToastContainer />
             </div>
           );
         })}
